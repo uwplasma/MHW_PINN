@@ -10,7 +10,7 @@ cd MHW_PINN
 mkdir data models loss training visualizations
 
 # Create necessary files
-touch models/mhw_network.py loss/physics_loss.py training/train.py visualizations/loss_plot.py visualizations/animate.py requirements.txt README.md
+touch models/mhw_network.py loss/physics_loss.py training/grid_setup.py training/grid_visual.py training/train.py results/loss_plot.py results/animate.py requirements.txt README.md
 
 chmod +x setup.sh
 
