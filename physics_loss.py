@@ -6,6 +6,43 @@ def calculate_grid_spacing(Nx, Ny):
     y_spacing = 2.0 / (Ny - 1)
     return x_spacing, y_spacing
 
+def create_grid(Nx=128, Ny=128, T=33, batch_size=30):
+    """
+    Creates a 3D space-time grid and prepares it for batch processing.
+
+    Args:
+        Nx (int): Number of grid points in x-direction
+        Ny (int): Number of grid points in y-direction
+        T (int): Number of time steps
+        batch_size (int): Number of samples per batch
+
+    Returns:
+        inputs (tf.Tensor): Tensor of shape (batch_size, Nx, Ny, T, 3)
+        grid_x, grid_y, grid_t (tf.Tensor): Coordinate tensors for visualization
+    """
+    # Create meshgrid for (x, y, t)
+    grids_xy_t = np.meshgrid(
+        np.linspace(-1, 1, Nx),  # X-coordinates
+        np.linspace(-1, 1, Ny),  # Y-coordinates
+        np.linspace(0, 1, T),    # Time steps
+        indexing='ij'
+    )
+
+    # Convert to TensorFlow tensors
+    grid_x, grid_y, grid_t = [tf.convert_to_tensor(t, dtype=tf.float32) for t in grids_xy_t]
+
+    # Stack into single input tensor (Nx, Ny, T, 3)
+    inputs = tf.stack([grid_x, grid_y, grid_t], axis=-1) 
+
+    # Expand dimensions to match batch format
+    inputs = tf.expand_dims(inputs, axis=0)  # (1, Nx, Ny, T, 3)
+
+    # Duplicate for batch size
+    inputs = tf.tile(inputs, [batch_size, 1, 1, 1, 1])  # (batch_size, Nx, Ny, T, 3)
+
+    return inputs, grid_x, grid_y, grid_t
+
+
 # Below, we also need to include some definitions to successfully compute the necessary calucations for the 2D (modified) Hasegawa-Wakatani Simulation,
 # including computations for the gradient, a poisson bracket and fourth-order laplacian.
 def calculate_gradients(field, axis, epsilon):
