@@ -25,8 +25,8 @@ This repository contains a Physics-Informed Neural Network (PINN) implementation
 ## Installation and Setup
 ### 1. Clone the repository
 ```bash
-git clone <repository_url>
-cd <repository_name>
+git clone <https://github.com/katiejoslyn/MHW_PINN>
+cd <MHW_PINN>
 ```
 
 ### 2. Run the setup script
