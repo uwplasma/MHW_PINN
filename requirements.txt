@@ -1,0 +1,25 @@
+The first required installation is Phiflow. The old installation I was using before break (simply !pip install --ugrade --quiet phiflow) was no longer working. 
+Under 'issues' on the phiflow GitHub, it seems other people are having the same issue = [Import Error: Cannot import name 'getitem_dataclass'](https://github.com/tum-pbs/PhiFlow/issues/184). 
+The current, temporary solution is below, and is the first installation package for this code:
+
+!pip uninstall phiflow
+!pip install git+https://github.com/tum-pbs/PhiFlow@develop
+!pip uninstall phiml
+!pip install git+https://github.com/tum-pbs/PhiML@develop
+
+Below are the remaining requirements for the entirety of this code:
+
+SETUP
+-----
+from phi.tf.flow import *
+import numpy as np
+
+VISUALIZATIONS
+--------------
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from IPython.display import display, HTML
+
+TRAINING
+--------
+import time
