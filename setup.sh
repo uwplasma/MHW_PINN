@@ -1,17 +1,28 @@
 #!/bin/bash
 
-# Clone the GitHub repository
-git clone https://github.com/yourusername/MHW_PINN.git
-
-# Change to the project directory
-cd MHW_PINN
+echo "Setting up the PINN for the 2D MHW system..."
 
 # Create necessary directories
-mkdir data models loss training visualizations
+mkdir -p checkpoints
+mkdir -p logs
+mkdir -p data  # Only if you have data files
 
-# Create necessary files
-touch models/mhw_network.py loss/physics_loss.py training/grid_setup.py training/grid_visual.py training/train.py results/animate.py requirements.txt README.md
+# Set up virtual environment (optional but recommended)
+if [ ! -d "venv" ]; then
+    python3 -m venv venv
+    echo "Virtual environment created."
+fi
 
-chmod +x setup.sh
+# Activate the virtual environment
+source venv/bin/activate
 
-./setup.sh
+# Upgrade pip and install dependencies
+pip install --upgrade pip
+if [ -f requirements.txt ]; then
+    pip install -r requirements.txt
+    echo "Dependencies installed."
+else
+    echo "No requirements.txt found. Please install dependencies manually."
+fi
+
+echo "Setup complete!"
