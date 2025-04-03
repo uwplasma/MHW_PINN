@@ -14,6 +14,9 @@ This repository contains a Physics-Informed Neural Network (PINN) implementation
 ├── physics_loss.py    # PINN loss function based on MHW equations
 ├── grid_visual.py     # Visualization utilities for grid data
 ├── train.py           # Training script for the PINN
+├── loss_converge.py   # Plots the total loss over the training steps
+├── predicted_state.py # Plots and animates the predicted state for each grid after across each training step
+├── troubleshoot.py    # Plots to visualize results and compare to expectations - are we seeing the behavior we expect, and if not, what areas of the code need to be targeted
 ├── requirements.txt   # Dependencies
 ├── setup.sh           # Setup script for environment
 └── README.md          # This file
