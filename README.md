@@ -1,7 +1,7 @@
 # Physics-Informed Neural Network for the 2D Modified Hasegawa-Wakatani System
 
 ## Overview
-This repository contains a Physics-Informed Neural Network (PINN) implementation to solve the 2D Modified Hasegawa-Wakatani (MHW) system, which describes plasma turbulence in stellarators. The model enforces periodic boundary conditions and focuses on solving for the non-zonal components of the system.
+This repository aims to create a Physics-Informed Neural Network (PINN) to solve the 2D Modified Hasegawa-Wakatani (MHW) system of equations to understand how PINNS and AI can be used to aid in the prediction of plasma turbulence, speed up numerical simulations, and/or be incorporated into stellarator optimization studies.
 
 ## Project Structure
 ```
