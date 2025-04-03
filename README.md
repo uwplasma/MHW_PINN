@@ -55,21 +55,3 @@ To start training:
 ```bash
 python train.py
 ```
-
-Training includes:
-- A **physics-informed loss function** (defined in `physics_loss.py`) enforcing the MHW system
-- **Adaptive learning rate decay** using an exponential scheduler
-- Periodic **checkpoint saving**
-
-## Visualization
-Use `grid_visual.py` to visualize results:
-```python
-from grid_visual import show_state_at_timestep, animate_field
-show_state_at_timestep(tilde_phi_grid, t_index=32, batch_index=0, title="Non-zonal Phi Field")
-phi_animation = animate_field(tilde_phi_grid, "Non-zonal Phi Field Evolution")
-```
-Animations can be displayed in Jupyter Notebooks using:
-```python
-from IPython.display import display, HTML
-display(HTML(phi_animation.to_html5_video()))
-```
