@@ -5,21 +5,21 @@ This repository aims to create a Physics-Informed Neural Network (PINN) to solve
 
 ## Project Structure
 ```
-├── MHW_PINN_pt.ipynb/ # Jupyter Notebook code using PyTorch rather than Tensorflow
-├── MHW_PINN_tf.ipynb/ # Original google colab code using Tensorflow
+├── MHW_PINN_pt.ipynb/ # Jupyter Notebook code using PyTorch rather than TensorFlow
+├── MHW_PINN_tf.ipynb/ # Original google colab code using TensorFlow
 ├── checkpoints/       # Stores model checkpoints
 ├── logs/              # Training logs
 ├── data/              # (Optional) Data files
-├── model.py           # Defines the MHWNetwork class
+├── model.py           # Defines the MHWNetwork class using both TensorFlow and PyTorch
 ├── physics_utils.py   # Contains physics-based computations (gradients, Poisson solver, etc.)
-├── grid_utils.py      # Grid setup utilities
-├── physics_loss.py    # PINN loss function based on MHW equations
-├── grid_visual.py     # Visualization utilities for grid data
-├── train.py           # Training script for the PINN
-├── loss_converge.py   # Plots the total loss over the training steps
-├── predicted_state.py # Plots and animates the predicted state for each grid after across each training step
-├── troubleshoot.py    # Plots to visualize results and compare to expectations - are we seeing the behavior we expect, and if not, what areas of the code need to be targeted
-├── requirements.txt   # Dependencies
+├── grid_utils.py      # Grid setup utilities using both TensorFlow and PyTorch
+├── physics_loss.py    # PINN loss function based on MHW equations using both TensorFlow and PyTorch
+├── grid_visual.py     # Visualization utilities for pre-trained grid data using both TensorFlow and PyTorch
+├── train.py           # Training script for the PINN using both TensorFlow and PyTorch
+├── loss_converge.py   # Plots the total loss over the training steps (same for TensorFlow and Pytorch, only requires matplotlib.pyplot)
+├── predicted_state.py # Plots and animates the predicted state for each grid post-training across each training step for both TensorFlow and PyTorch
+├── troubleshoot.py    # Plots to visualize results and compare to expectations - are we seeing the behavior we expect, and if not, what areas of the code need to be targeted (currently only included in the Google Colab code - i.e., the code utilizing TensorFlow, however none of these definitions require the use of TensorFlow so should work for both codes. 
+├── requirements.txt   # Dependencies, including those for both TensorFlow and PyTorch
 ├── setup.sh           # Setup script for environment
 └── README.md          # This file
 ```
