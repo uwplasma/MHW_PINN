@@ -1,3 +1,5 @@
+# using tensorflow
+
 from phi.tf.flow import *
 import numpy as np
 
@@ -28,7 +30,45 @@ class MHWNetwork(tf.keras.Model):
       zeta_output = self.zeta_output(x)
       n_output = self.n_output(x)
 
+
       return phi_output, zeta_output, n_output
+
+# Instantiate model
+model = MHWNetwork(num_hidden_layers=8, num_neurons=20)
+
+# using torch:
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class MHWNetwork(nn.Module):
+    '''
+    Defines a NN for solving the Modified (2D) Hasegawa-Wakatani (MHW) system of equations.
+    Hidden layers = 8 fully connected layers, tanh activations, 20 units each.
+    Output layers: phi, zeta, n - each returning a single value per point
+    Input: tensor of shape (batch_size, 3) corresponding to (x, y, t).
+    '''
+    def __init__(self, num_hidden_layers=8, num_neurons=20):
+        super(MHWNetwork, self).__init__()
+        self.hidden_layers = nn.ModuleList([
+            nn.Linear(3 if i == 0 else num_neurons, num_neurons) for i in range(num_hidden_layers)
+        ])
+        self.phi_output = nn.Linear(num_neurons, 1)
+        self.zeta_output = nn.Linear(num_neurons, 1)
+        self.n_output = nn.Linear(num_neurons, 1)
+
+    def forward(self, inputs):
+        """
+        Forward pass for batch inputs: expects shape (batch_size, 3), where 3 corresponds to (x, y, t)
+        """
+        x = inputs
+        for layer in self.hidden_layers:
+            x = torch.tanh(layer(x))
+        phi_output = self.phi_output(x)
+        zeta_output = self.zeta_output(x)
+        n_output = self.n_output(x)
+        return phi_output, zeta_output, n_output
 
 # Instantiate model
 model = MHWNetwork(num_hidden_layers=8, num_neurons=20)
