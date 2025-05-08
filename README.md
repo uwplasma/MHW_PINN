@@ -5,7 +5,9 @@ This repository aims to create a Physics-Informed Neural Network (PINN) to solve
 
 ## Project Structure
 ```
-├── checkpoints/        # Stores model checkpoints
+├── MHW_PINN_pt.ipynb/ # Jupyter Notebook code using PyTorch rather than Tensorflow
+├── MHW_PINN_tf.ipynb/ # Original google colab code using Tensorflow
+├── checkpoints/       # Stores model checkpoints
 ├── logs/              # Training logs
 ├── data/              # (Optional) Data files
 ├── model.py           # Defines the MHWNetwork class
