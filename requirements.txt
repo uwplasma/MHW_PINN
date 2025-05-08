@@ -1,3 +1,4 @@
+# for tensorflow:
 The first required installation is Phiflow. The old installation I was using before break (simply !pip install --ugrade --quiet phiflow) was no longer working. 
 Under 'issues' on the phiflow GitHub, it seems other people are having the same issue = [Import Error: Cannot import name 'getitem_dataclass'](https://github.com/tum-pbs/PhiFlow/issues/184). 
 The current, temporary solution is below, and is the first installation package for this code:
@@ -7,11 +8,30 @@ The current, temporary solution is below, and is the first installation package 
 !pip uninstall phiml
 !pip install git+https://github.com/tum-pbs/PhiML@develop
 
+# for pytorch:
+!pip install torch
+
 Below are the remaining requirements for the entirety of this code:
 
 SETUP
 -----
-from phi.tf.flow import *
+# tensorflow:
+
+from phi.tf.flow import * 
+
+# torch:
+
+import os
+os.environ['PHIFLOW_BACKEND'] = 'torch'  # before importing PhiFlow
+
+from phi.flow import *
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+# both tensorflow and pytorch requirements:
+
 import numpy as np
 
 VISUALIZATIONS
