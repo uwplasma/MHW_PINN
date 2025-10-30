@@ -1,4 +1,5 @@
 # using tensorflow:
+import tensorflow as tf
 
 def calculate_gradients(field, axis, epsilon):
     """ Compute finite differences for gradient using a fourth-order accurate scheme. """
@@ -73,7 +74,7 @@ def open_boundary(Nx, Ny, batch_size, epsilon=0.0157):
     return x_boundary, y_boundary, t_boundary, zeta_boundary, n_boundary, phi_boundary
 
 # using torch:
-
+'''
 import numpy as np
 import torch
 
@@ -140,3 +141,4 @@ def open_boundary(Nx, Ny, batch_size):
     dx, dy = calculate_grid_spacing(Nx, Ny)
     phi_boundary = poisson_bracket(zeta_boundary, n_boundary, dx, dy)
     return x_boundary, y_boundary, t_boundary, zeta_boundary, n_boundary, phi_boundary
+'''

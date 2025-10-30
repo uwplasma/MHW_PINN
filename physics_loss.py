@@ -17,11 +17,12 @@ def MHW_physics_loss(phi, zeta, n, x, y, t, Nx, Ny, alpha=0.5, kappa=1.0, mu=1.0
         loss_zeta, loss_n: Scalar loss values computed from residuals
     """
 
-    from utils import non_zonal_component, poisson_bracket, grad4, calculate_gradients
+    from physics_utils import non_zonal_component, poisson_bracket, grad4, calculate_gradients
 
     # Compute non-zonal components
     tilde_phi = non_zonal_component(phi, axis=1)  # (batch_size, Nx, Ny)
     tilde_n = non_zonal_component(n, axis=1)  # (batch_size, Nx, Ny)
+    
 
     # Poisson brackets using non-zonal components
     zeta_PB = poisson_bracket(tilde_phi, zeta, Nx, Ny, epsilon=epsilon)  # (batch_size, Nx, Ny)
@@ -43,7 +44,8 @@ def MHW_physics_loss(phi, zeta, n, x, y, t, Nx, Ny, alpha=0.5, kappa=1.0, mu=1.0
     loss_n = tf.sqrt(tf.reduce_mean(tf.square(loss_n_unnorm)))
 
     return loss_zeta, loss_n
-
+#, loss_zeta_unnorm, loss_n_unnorm
+'''
 # using torch:
 import torch
 
@@ -89,3 +91,4 @@ def MHW_physics_loss(phi, zeta, n, x, y, t, Nx, Ny, alpha=0.5, kappa=1.0, mu=1.0
     loss_n = torch.sqrt(torch.mean(loss_n_unnorm ** 2))
 
     return loss_zeta, loss_n
+'''

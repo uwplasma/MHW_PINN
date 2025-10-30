@@ -1,16 +1,35 @@
 # tensorflow:
+'''
+#what chat wants
+import os
+import tensorflow as tf
+
+# Force float32 for all tensors
+tf.keras.backend.set_floatx('float32')
+
+# Enable GPU memory growth (avoids alignment issues)
+gpus = tf.config.list_physical_devices('GPU')
+for gpu in gpus:
+    tf.config.experimental.set_memory_growth(gpu, True)
+
+# Optional: verify GPUs
+print("GPUs available:", gpus)
+'''
 
 import time
 import matplotlib.pyplot as plt
-import tensorflow as tf
+#import tensorflow as tf
 import numpy as np
 
-from models.mhw_network import MHWNetwork
-from loss.physics_loss import MHW_physics_loss
-from training.grid_setup import initialize_grid  # Import grid setup function
+
+from model import MHWNetwork
+from physics_loss import MHW_physics_loss
+from physics_utils import *
+#from training.grid_setup import initialize_grid  # Import grid setup function
 
 import time
 import tensorflow as tf
+#tf.config.set_visible_devices([], 'GPU')
 
 # Create model instance
 model = MHWNetwork()
@@ -36,12 +55,14 @@ Nx, Ny = 128, 128  # Grid resolution
 num_physics_points = Nx * Ny // 4  # Increase physics sample size
 
 # Loss weights
+#USED TO BE 1 and 10, then 1 n 2
 lambda_bc = 1.0
-lambda_ph = 10.0
+lambda_ph = 1.0
 
 # Start timer
 start = time.time()
 loss_history = []
+
 
 @tf.function
 def train_step():
@@ -66,35 +87,67 @@ def train_step():
         inputs_ph = tf.stack([x_ph, y_ph, t_ph], axis=-1)
 
         phi_pred_inner, zeta_pred_inner, n_pred_inner = model(inputs_ph)
-        loss_ph_phi, loss_ph_n = MHW_physics_loss(phi_pred_inner, zeta_pred_inner, n_pred_inner, x_ph, y_ph, t_ph, Nx, Ny)
+        loss_ph_phi, loss_ph_n= MHW_physics_loss(phi_pred_inner, zeta_pred_inner, n_pred_inner, x_ph, y_ph, t_ph, Nx, Ny)
+        #, loss_z_unnorm, loss_n_unnorm 
         loss_ph = loss_ph_phi + loss_ph_n
-
+        #Weird naming conventions
         # Total loss
         total_loss = lambda_bc * loss_bnd + lambda_ph * tf.reduce_mean(loss_ph)
-
+        if (tf.math.is_nan(total_loss)):
+            print(loss_bnd)
+            print(loss_bnd)
+            print(tf.reduce_mean(loss_ph))
+            print(tf.reduce_mean(loss_ph))
+            #These do not work
+            '''
+            Python doesn't like the np I think
+        if (np.isnan(total_loss.numpy()):
+            print("two")
+            print(loss_bnd)
+            print(loss_bnd)
+            print(tf.reduce_mean(loss_ph))
+            print(tf.reduce_mean(loss_ph))
+            '''
     gradients = tape.gradient(total_loss, model.trainable_variables)
     clipped_grads = [tf.clip_by_value(grad, -1.0, 1.0) if grad is not None else grad for grad in gradients]
     optimizer.apply_gradients(zip(clipped_grads, model.trainable_variables))
+    
+    
 
-    return total_loss
+    vec=[total_loss,loss_bnd,loss_ph, tf.reduce_mean(loss_ph)]
+    #, loss_z_unnorm, loss_n_unnorm
+
+    return vec
 
 for optim_step in range(ITERS + 1):
+    
     # Run a single training step and get loss
-    total_loss = train_step()
+    vec = train_step()
+    total_loss =vec[0]   
+    loss_bnd=vec[1]
+    loss_ph=vec[2]
+    reduced_mean_loss_ph=vec[3]
+    #loss_z_unn = vec[4]
+    #loss_n_unn = vec[5]
 
     # Log training progress
-    if optim_step < 3 or optim_step % 1000 == 0:
-        print(f"Step {optim_step}, Loss: {total_loss.numpy():.6f}")
+    if optim_step < 3 or optim_step % 1000 == 0 or optim_step>1080:
+        print(f"Step {optim_step}, Loss: {total_loss.numpy():.6f}, Lossbnd: {loss_bnd}, lossphi: {loss_ph}, rmlossphi: {reduced_mean_loss_ph}")
+        #, loss_z_unn: {loss_z_unn}, loss_n_unn: {loss_n_unn}
+    if (np.isnan(total_loss.numpy())):
+        print(optim_step)
+        break
+
 
 # Save final model
-model.save('pinn_model_final.h5')
+model.save('pinn_model_final_n100_10_30_2025.h5')
 
 # Save final model
-model.save('pinn_model_final.h5')
+#model.save('pinn_model_final.h5')
 print(f"Runtime: {time.time() - start:.2f}s")
 
 # torch:
-
+'''
 import time
 import torch
 import torch.optim as optim
@@ -187,3 +240,4 @@ torch.save(model.state_dict(), 'pinn_model_final.pt')
 
 # Final runtime output
 print(f"Runtime: {time.time() - start:.2f}s")
+'''
