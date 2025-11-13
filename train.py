@@ -140,7 +140,7 @@ for optim_step in range(ITERS + 1):
 
 
 # Save final model
-model.save('pinn_model_final_n100_10_30_2025.h5')
+model.save('pinn_model_final_n100_11_6_2025.keras')
 
 # Save final model
 #model.save('pinn_model_final.h5')

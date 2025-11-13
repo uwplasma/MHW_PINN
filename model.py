@@ -3,7 +3,8 @@
 from phi.tf.flow import *
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras 
+from tensorflow.keras import Model
+import keras
 
 # Below, subclassing 'tf.keras.Model' allows access to built-in TensorFlow functionalities
  # (i.e. easy model saving, checkpointing, training workflows, and override methods [like 'train_step'] if custom loop training needed)

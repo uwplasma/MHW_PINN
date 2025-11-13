@@ -10,7 +10,7 @@ from tensorflow.keras.models import load_model
 #    model = load_model('pinn_model_final.h5')
 #I may not need custon objects here but I still don't know what's up
 #model = load_model('pinn_model_final_n100_10_14_2025.h5', custom_objects={'MHWNetwork' : MHWNetwork})
-model = load_model('pinn_model_final.h5')
+model = load_model('pinn_model_final_n100_11_6_2025.keras')
 
 def show_predicted_state(model, t_index, title, batch_size=30):
     """
@@ -68,9 +68,10 @@ def show_predicted_state(model, t_index, title, batch_size=30):
     plt.ylabel("y")
     plt.title(f"{title} at Timestep {t_index}")
     plt.show()
+    plt.savefig('pinn_11_13_2025'+title)
 
 # Example: Visualize model predictions at timestep 32
 t_index = 32
-show_predicted_state(model, t_index, "Phi", batch_size=30)
-show_predicted_state(model, t_index, "Zeta", batch_size=30)
-show_predicted_state(model, t_index, "n", batch_size=30)
+show_predicted_state(model, t_index, "Phi", batch_size=32)
+show_predicted_state(model, t_index, "Zeta", batch_size=32)
+show_predicted_state(model, t_index, "n", batch_size=32)
