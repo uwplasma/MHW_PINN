@@ -47,7 +47,8 @@ LR_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
 optimizer = tf.keras.optimizers.Adam(learning_rate=LR_schedule)
 
 # Fixed batch size
-batch_size = 30
+#Inconsistency with this and the visual call
+batch_size = 32
 
 # Training parameters
 ITERS = 10000

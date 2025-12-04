@@ -1,0 +1,48 @@
+#!/bin/bash -l
+
+#.Declare a name for this job to be my_serial_job
+#.it is recommended that this name be kept to 16 characters or less
+#SBATCH -J tensortrain
+
+#.Request the queue (enter the possible names, if omitted, default is the default)
+#.this job is going to use the default
+#SBATCH -q regular
+
+#.Number of nodes to request (Perlmutter has 64 cores and 4 GPUs per node)
+#SBATCH -N 1
+
+
+#.Specify GPU per task needs:
+#SBATCH --constraint=cpu
+#SBATCH -c 32
+
+#.Request wall time
+#SBATCH -t 10:00:00
+
+#SBATCH --account=m4656
+
+#.Mail is sent to you when the job starts and when it terminates or aborts.
+#SBATCH --mail-user=gtmorris@wisc.edu
+#SBATCH --mail-type=END,FAIL,REQUEUE
+
+#SBATCH -o slurmout-%j.out
+#SBATCH -e slurmerr-%j.err
+
+source venv/bin/activate
+module load python
+module load openmpi
+module load cudatoolkit
+module load nccl
+module load cuda
+module load tensorflow
+#srun setup.sh
+
+export XLA_FLAGS=--xla_gpu_cuda_data_dir=/opt/nvidia/hpc_sdk/Linux_x86_64/25.5/cudatoolkit/12.2
+
+
+#.For some reason we need to specify the full path to gkyl command in jobscript.
+export gComDir="$HOME/MHW_PINN"
+
+echo 'srun -n 1 -c 32 python $gComDir/MHW_PINN/train.py'
+echo '10.14.25, 11:33 20hr 100 NEURONS'
+srun -n 1 -c 32 python $gComDir/train.py

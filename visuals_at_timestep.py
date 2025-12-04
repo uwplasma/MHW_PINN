@@ -28,7 +28,7 @@ def show_predicted_state(model, t_index, title, batch_size=30):
     X, Y = np.meshgrid(x_vals, y_vals)  # 2D meshgrid
 
     # Create input tensor (all spatial points at timestep t_index)
-    t_fixed = np.full_like(X, fill_value=t_index / 33)  # Normalize time (adjust based on your time grid)
+    t_fixed = np.full_like(X, fill_value=t_index / 32)  # Normalize time (adjust based on your time grid). /33 for 32 timesteps
     inputs = np.stack([X, Y, t_fixed], axis=-1)  # Shape (128, 128, 3)
 
     # Reshape inputs to (Nx * Ny, 3) for model prediction
@@ -41,7 +41,7 @@ def show_predicted_state(model, t_index, title, batch_size=30):
     for i in range(0, num_points, batch_size):
         batch_input = inputs_tensor[i:i + batch_size]  # Select batch
         batch_input = tf.expand_dims(batch_input, axis=0)  # Add batch dimension
-        phi_batch, zeta_batch, n_batch = model(batch_input)  # Model prediction
+        phi_batch, zeta_batch, n_batch = model(batch_input)  # Model prediction #MODEL CALL
 
         # Store results (convert tensors to NumPy arrays)
         predictions.append((phi_batch.numpy(), zeta_batch.numpy(), n_batch.numpy()))
@@ -68,10 +68,10 @@ def show_predicted_state(model, t_index, title, batch_size=30):
     plt.ylabel("y")
     plt.title(f"{title} at Timestep {t_index}")
     plt.show()
-    plt.savefig('pinn_11_13_2025'+title)
+    plt.savefig('pinn_t0__1130_11_30_2025'+title)
 
 # Example: Visualize model predictions at timestep 32
-t_index = 32
+t_index = 0
 show_predicted_state(model, t_index, "Phi", batch_size=32)
 show_predicted_state(model, t_index, "Zeta", batch_size=32)
 show_predicted_state(model, t_index, "n", batch_size=32)
